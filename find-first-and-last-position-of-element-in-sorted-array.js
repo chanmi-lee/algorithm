@@ -1,0 +1,60 @@
+// https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    let start = -1
+    let end = -1
+
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] === target) {
+            if (start === -1) {
+                start = i
+                end = i
+            }
+            end = Math.max(end, i)
+        }
+    }
+    let result = [start, end]
+    return result
+};
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    const binarySearch = (nums, target, isSearchingLeft) => {
+        let left = 0
+        let right = nums.length - 1
+        let idx = -1
+
+        while (left <= right) {
+            const mid = Math.floor((left + right) / 2)
+            
+            if (nums[mid] > target) {
+                right = mid - 1
+            } else if (nums[mid] < target) {
+                left = mid + 1
+            } else {
+                idx = mid;
+                if (isSearchingLeft) {
+                    right = mid - 1
+                } else {
+                    left = mid + 1
+                }
+            }
+        }
+        return idx
+    }
+
+    const left = binarySearch(nums, target, true)
+    const right = binarySearch(nums, target, false)
+
+    return [left, right]
+};
